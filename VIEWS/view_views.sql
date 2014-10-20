@@ -1,6 +1,6 @@
 SET search_path TO 'public', pg_catalog;
 
-CREATE VIEW view_views AS
+CREATE OR REPLACE VIEW view_views AS
      SELECT
          pg_class.oid AS ViewID,
          pg_get_viewdef(pg_class.oid, TRUE) AS Sourcecode,

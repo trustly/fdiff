@@ -1,18 +1,37 @@
 SET search_path TO 'public', pg_catalog;
 
-CREATE FUNCTION fstage() RETURNS boolean
+CREATE OR REPLACE FUNCTION fstage() RETURNS boolean
     LANGUAGE plpgsql
+    SET search_path TO public
     AS $$
-DECLARE
 BEGIN
 
 RAISE DEBUG 'Creating FunctionsBefore';
 CREATE TEMP TABLE FunctionsBefore ON COMMIT DROP AS
-SELECT * FROM View_Functions;
+SELECT
+    FunctionID,
+    Schema,
+    Name,
+    ResultDataType,
+    ArgumentDataTypes,
+    Type,
+    Volatility,
+    Owner,
+    Language,
+    Sourcecode,
+    SecurityDefiner,
+    ConfigurationParameters
+FROM View_Functions;
 
 RAISE DEBUG 'Creating ViewsBefore';
 CREATE TEMP TABLE ViewsBefore ON COMMIT DROP AS
-SELECT * FROM View_Views;
+SELECT
+    ViewID,
+    Sourcecode,
+    Schema,
+    Name,
+    Owner
+FROM View_Views;
 
 RETURN TRUE;
 END;

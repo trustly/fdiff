@@ -1,6 +1,6 @@
 SET search_path TO 'public', pg_catalog;
 
-CREATE FUNCTION diff(_original text, _new text) RETURNS text
+CREATE OR REPLACE FUNCTION diff(_original text, _new text) RETURNS text
     LANGUAGE plperlu
     AS $_X$
 use Algorithm::Diff;
@@ -17,7 +17,7 @@ for my $d (@diff) {
     $str .= $line_num . ' ' . $d->[0] . ' ' . $d->[2] . "\n";
     $str .= "\n";
 }
-return $str;
+return defined($str) ? $str : '';
 $_X$;
 
 ALTER FUNCTION public.diff(_original text, _new text) OWNER TO postgres;
